@@ -1,5 +1,8 @@
 // Global API key
-const API_KEY = "49b4cd9bd298bc73a9a91553c7db7213";
+const API_KEY = "";
+
+// Get searchHistory if any was found
+const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
 // Shorthand query selector
 const $ = (element) => {
@@ -35,11 +38,30 @@ const getWeatherData = async ({ lat, lon }) => {
 
 // Search in for correct geocoding and fetch new weather data
 const search = async (query) => {
-
   // Used for searching for location data
   const locationQuery = await getLocation(query);
 
+  // Push to searchHistory and update data
+  searchHistory.push(locationQuery);
+
+  // Update localStorage with new searchHistory
+  localStorage.setItem(
+    "searchHistory",
+    JSON.stringify(searchHistory)
+  );
+
+  // Update the UI with the updated location
+  update({
+    lat: locationQuery.lat,
+    lon: locationQuery.lon,
+  });
+};
+
+// Is used to fetch newest weather data and update the UI
+const update = async (location) => {
   // Used for searching for weather data
-  const weatherQuery = await getWeatherData({ lat: locationQuery.lat, lon: locationQuery.lon });
-    console.log(weatherQuery)
+  const weatherQuery = await getWeatherData({
+    lat: location.lat,
+    lon: location.lon,
+  });
 };
