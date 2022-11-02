@@ -26,6 +26,15 @@
   ) !important;
 }
 
+.bg-snow{
+    background: rgb(182, 183, 185) !important;
+    background: linear-gradient(
+      180deg,
+      rgba(182, 183, 185, 1) 0%,
+      rgba(30, 58, 138, 1) 100%
+    ) !important;
+}
+
 .bg-night {
   background: rgb(17, 24, 39) !important;
   background: linear-gradient(
@@ -60,6 +69,7 @@ button svg{
   background: rgb(30, 58, 138);
   height: 100vh;
   width: 100%;
+  transition:300ms ease;
 }
 
 header{
@@ -132,6 +142,7 @@ header button svg{
 #app-weather-data-wind svg{
     height:36px;
     width:36px;
+    transition:300ms ease;
 }
 
 #favourites, #search{
@@ -154,7 +165,8 @@ header button svg{
 }
 
 #search form{
-    padding:16px;
+    padding:0 16px;
+    padding-bottom:16px;
     display:flex;
 }
 
@@ -174,10 +186,14 @@ header button svg{
 }
 
 #search-results, #search-history{
-    padding:16px;
+    padding:0 16px;
     justify-content: center;
     flex-direction: column;
     display:none;
+}
+
+#search-results{
+    padding-bottom:16px;
 }
 
 #search-results ul, #search-history ul{
