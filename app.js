@@ -1,8 +1,11 @@
 // Global API key
-const API_KEY = "";
+const API_KEY = "49b4cd9bd298bc73a9a91553c7db7213";
 
 // Get searchHistory if any was found
 const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+// weatherData placeholder, stores data about currently loaded weather
+const weatherData = {};
 
 // Shorthand query selector
 const $ = (element) => {
