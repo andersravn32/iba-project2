@@ -173,6 +173,59 @@ header button svg{
     border-radius: 0px 8px 8px 0px;
 }
 
+#search-results, #search-history{
+    padding:16px;
+    justify-content: center;
+    flex-direction: column;
+    display:none;
+}
+
+#search-results ul, #search-history ul{
+    list-style-type:none;
+    display:flex;
+    flex-direction: column;
+}
+
+#search-results h2, #search-history h2{
+    font-size:20px;
+    margin-bottom:16px;
+}
+
+#search-results li, #search-history li{
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:2px solid #1e293b;
+    cursor:pointer;
+    transition:300ms ease;
+}
+
+#search li:hover{
+    opacity:75%;
+}
+
+#search-results li:last-of-type, #search-history li:last-of-type{
+    border-bottom:none;
+    margin-bottom:0px;
+    padding-bottom:0px;
+}
+
+#search-results h3, #search-history h3{
+    font-size:16px;
+}
+
+#search-results span, #search-history span{
+    font-size:12px;
+    opacity:50%;
+}
+
+#search-history button{
+    background-color:#334155;
+    padding:8px 24px;
+    border-radius: 8px;
+    margin: 0 auto;
+    margin-top:16px;
+}
+
 .show{
     transform: translateX(0) !important;
 }
