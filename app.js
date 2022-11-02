@@ -68,3 +68,27 @@ const update = async (location) => {
     lon: location.lon,
   });
 };
+
+// Add event listener for toggling favourites panel
+$("#app-header").querySelectorAll("button")[0].addEventListener("click", () => {
+  $("#favourites").classList.toggle("show");
+  $("#app-header").classList.toggle("hide-right");
+})
+
+// Add event listener for toggling search panel
+$("#app-header").querySelectorAll("button")[1].addEventListener("click", () => {
+  $("#search").classList.toggle("show");
+  $("#app-header").classList.toggle("hide-left");
+})
+
+// Add event listener for toggling favourites panel by X button
+$("#favourites").querySelector("header").querySelector("button").addEventListener("click", () => {
+  $("#favourites").classList.toggle("show");
+  $("#app-header").classList.toggle("hide-right");
+})
+
+// Add event listener for toggling search panel by X button
+$("#search").querySelector("header").querySelector("button").addEventListener("click", () => {
+  $("#search").classList.toggle("show");
+  $("#app-header").classList.toggle("hide-left");
+})
