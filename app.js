@@ -52,7 +52,7 @@ const search = async (query) => {
     "searchHistory",
     JSON.stringify(searchHistory)
   );
-
+    console.log(locationQuery)
   // Update the UI with the updated location
   update({
     lat: locationQuery.lat,
@@ -67,6 +67,7 @@ const update = async (location) => {
     lat: location.lat,
     lon: location.lon,
   });
+  console.log(weatherQuery)
 };
 
 // Add event listener for toggling favourites panel
