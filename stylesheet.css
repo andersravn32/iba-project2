@@ -300,3 +300,23 @@ header button svg {
 .hide-left {
   transform: translateX(-100%);
 }
+
+#app-weather-forecasts-hours button {
+    background-color: #334155;
+    padding: 8px 24px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+#app-weather-data, #app-weather-forecasts-hours{
+    display:none;
+}
+
+#app-weather-no-geo{
+    display:none;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    text-align:center;
+    padding:16px;
+}
