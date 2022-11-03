@@ -146,7 +146,6 @@ header button svg {
   transition: 300ms ease;
 }
 
-#favourites,
 #search {
   background: #0f172a;
   position: fixed;
@@ -156,10 +155,6 @@ header button svg {
   bottom: 0;
   z-index: 10;
   transition: 500ms ease;
-}
-
-#favourites {
-  transform: translateX(-100%);
 }
 
 #search {
