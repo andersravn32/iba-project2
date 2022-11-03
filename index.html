@@ -122,7 +122,10 @@
           <div id="app-weather-data-temperature">
             <h2>9°C</h2>
             <p>
-              <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="Icon">
+              <img
+                src="http://openweathermap.org/img/wn/10d@2x.png"
+                alt="Icon"
+              />
               <span>Overskyet</span>
             </p>
           </div>
@@ -144,11 +147,29 @@
         </div>
       </section>
       <section id="app-weather-forecasts-hours">
-
+        <h2>De kommende timer</h2>
+        <div class="forecast-current">
+          <div class="forecast">
+            <span>11:00</span>
+            <img src="http://openweathermap.org/img/wn/02d@2x.png" alt="Icon" />
+            <span>9°C</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span>5 m/s</span>
+          </div>
+        </div>
       </section>
-      <section id="app-weather-forecasts-days">
-        
-      </section>
+      <section id="app-weather-forecasts-days"></section>
     </div>
     <script src="/app.js"></script>
   </body>
