@@ -282,8 +282,9 @@ header button svg {
     width:24px;
 }
 
-.forecast span:nth-of-type(2){
-    margin-bottom:8px;
+.forecast span:nth-of-type(3){
+    margin:8px 0;
+    font-size:16px;
 }
 
 .show {
