@@ -13,3 +13,6 @@ Derudover benytter vi også Prettier til at holde denne formatering præcis hele
 
 ### Comments
 Vi har skrevet kommentarer ud fra funktioner og variabler. Dette forbedrer den generelle developer experience, da det er nemt og overskueligt at læse sig frem til hvad de forskellige funktioner og elementer gør.
+
+### Version Control
+Vi har benyttet Git til version control. Vi har benyttet en standard til skrivning af Git commit messages. Dette resultere i at det er hurtigt at se præcist hvad det givne commit har tilføjet/redigeret/fjernet i den samlede commit historik.
