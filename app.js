@@ -12,6 +12,12 @@ const $ = (element) => {
   return document.querySelector(element);
 };
 
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition((location) => {
+    update({ lat: location.coords.latitude, lon: location.coords.longitude });
+  });
+}
+
 // Get weather data for a specific location
 const getWeatherData = async ({ lat, lon }) => {
   const request = await fetch(
@@ -46,7 +52,8 @@ const update = async ({ lat, lon }) => {
   $("#app-weather-location-data").querySelectorAll("p")[1].innerText =
     new Intl.DateTimeFormat("da-DK", { dateStyle: "full", timeStyle: "short" })
       .format(new Date(Date.now() + 1000 * request.timezone))
-      .split("kl.")[1].replace(".", ":");
+      .split("kl.")[1]
+      .replace(".", ":");
 
   // Update celcius temperature
   $("#app-weather-data-temperature").querySelector(
@@ -66,6 +73,8 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Tordenvejr";
+    $("#app-weather-data-temperature").querySelector("img").src =
+      "https://openweathermap.org/img/wn/11n@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-rain");
   }
@@ -74,6 +83,7 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Let regnvejr";
+      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/10d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-rain");
   }
@@ -82,6 +92,7 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Regnvejr";
+      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/09d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-rain");
   }
@@ -89,7 +100,8 @@ const update = async ({ lat, lon }) => {
   if (request.weather[0].id >= 600 && request.weather[0].id <= 622) {
     $("#app-weather-data-temperature")
       .querySelector("p")
-      .querySelector("span").innerText = "Snevejr";
+      .querySelector("span").innerText = "Snevejr"
+      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/13d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-snow");
   }
@@ -98,6 +110,7 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Skyfrit";
+      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/01d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-neutral");
   }
@@ -106,6 +119,7 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Overskyet";
+      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/02d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-snow");
   }
