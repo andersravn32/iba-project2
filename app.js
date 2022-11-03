@@ -14,23 +14,24 @@ const $ = (element) => {
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition((location) => {
-    update({ lat: location.coords.latitude, lon: location.coords.longitude });
+    // Update location UI
+    updateLocation(location.coords.latitude, location.coords.longitude);
+
+    // Update forecasts UI
+    updateForecasts(location.coords.latitude, location.coords.longitude);
   });
 }
 
 // Get weather data for a specific location
 const getWeatherData = async ({ lat, lon }) => {
   const request = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      return data;
-    });
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+  ).then((res) => res.json());
+  console.log(request);
   return request;
 };
 
-const update = async ({ lat, lon }) => {
+const updateLocation = async (lat, lon) => {
   // Request weather data regarding location
   const request = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
@@ -83,7 +84,8 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Let regnvejr";
-      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/10d@2x.png";
+    $("#app-weather-data-temperature").querySelector("img").src =
+      "http://openweathermap.org/img/wn/10d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-rain");
   }
@@ -92,7 +94,8 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Regnvejr";
-      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/09d@2x.png";
+    $("#app-weather-data-temperature").querySelector("img").src =
+      "http://openweathermap.org/img/wn/09d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-rain");
   }
@@ -100,8 +103,9 @@ const update = async ({ lat, lon }) => {
   if (request.weather[0].id >= 600 && request.weather[0].id <= 622) {
     $("#app-weather-data-temperature")
       .querySelector("p")
-      .querySelector("span").innerText = "Snevejr"
-      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/13d@2x.png";
+      .querySelector("span").innerText = "Snevejr";
+    $("#app-weather-data-temperature").querySelector("img").src =
+      "http://openweathermap.org/img/wn/13d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-snow");
   }
@@ -110,7 +114,8 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Skyfrit";
-      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/01d@2x.png";
+    $("#app-weather-data-temperature").querySelector("img").src =
+      "http://openweathermap.org/img/wn/01d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-neutral");
   }
@@ -119,12 +124,99 @@ const update = async ({ lat, lon }) => {
     $("#app-weather-data-temperature")
       .querySelector("p")
       .querySelector("span").innerText = "Overskyet";
-      $("#app-weather-data-temperature").querySelector("img").src = "http://openweathermap.org/img/wn/02d@2x.png";
+    $("#app-weather-data-temperature").querySelector("img").src =
+      "http://openweathermap.org/img/wn/02d@2x.png";
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-snow");
   }
 };
 
+const updateForecasts = async (lat, lon) => {
+  // Request forecast data from API
+  const request = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+  ).then((res) => res.json());
+
+  // Filter forecast data to only include relevant data for the current day
+  const forecasts = request.list.filter((data) => {
+    return data.dt_txt.includes(request.list[0].dt_txt.split(" ")[0]);
+  });
+
+  // Create forecast based on data
+  $(".forecast-current").innerHTML = "";
+  forecasts.forEach((forecast) => {
+    console.log(forecast);
+    // Create parent element
+    const element = document.createElement("div");
+    element.classList.add("forecast");
+
+    // Create child elements
+
+    // Time label
+    let time = forecast.dt_txt.split(" ")[1];
+    element.innerHTML += `<span>${time.split(":")[0]}:${
+      time.split(":")[1]
+    }</span>`;
+
+    // Weather icon
+    let weatherIcon = document.createElement("img");
+    weatherIcon.setAttribute("alt", "Icon");
+    let weatherLabel = document.createElement("span");
+
+    if (forecast.weather[0].id >= 200 && forecast.weather[0].id <= 232) {
+      weatherIcon.src = "https://openweathermap.org/img/wn/11n@2x.png";
+      weatherLabel.innerText = "Tordenvejr";
+    }
+
+    if (forecast.weather[0].id >= 300 && forecast.weather[0].id <= 321) {
+      weatherIcon.src = "http://openweathermap.org/img/wn/10d@2x.png";
+      weatherLabel.innerText = "Let regnvejr";
+    }
+
+    if (forecast.weather[0].id >= 500 && forecast.weather[0].id <= 531) {
+      weatherIcon.src = "http://openweathermap.org/img/wn/09d@2x.png";
+      weatherLabel.innerText = "Regnvejr";
+    }
+
+    if (forecast.weather[0].id >= 600 && forecast.weather[0].id <= 622) {
+      weatherIcon.src = "http://openweathermap.org/img/wn/13d@2x.png";
+      weatherLabel.innerText = "Snevejr";
+    }
+
+    if (forecast.weather[0].id >= 701 && forecast.weather[0].id <= 800) {
+      weatherIcon.src = "http://openweathermap.org/img/wn/01d@2x.png";
+      weatherLabel.innerText = "Skyfrit";
+    }
+
+    if (forecast.weather[0].id >= 801 && forecast.weather[0].id <= 804) {
+      weatherIcon.src = "http://openweathermap.org/img/wn/02d@2x.png";
+      weatherLabel.innerText = "Overskyet";
+    }
+    element.appendChild(weatherIcon);
+    element.appendChild(weatherLabel);
+
+    element.innerHTML += `
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      class="w-6 h-6"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z"
+        clip-rule="evenodd"
+      />
+    </svg>`;
+    element.querySelector(
+      "svg"
+    ).style.transform = `rotate(${forecast.wind.deg}deg)`;
+    element.innerHTML += `
+    <span>${forecast.wind.speed} m/s</span>`;
+    // Append child elements to parent
+    $(".forecast-current").appendChild(element);
+  });
+};
 // Add event listener for toggling favourites panel
 $("#app-header")
   .querySelectorAll("button")[0]
@@ -155,7 +247,10 @@ $("#app-header")
           e.preventDefault();
 
           // Update base app layout
-          update({ lat: location.lat, lon: location.lon });
+          updateLocation(location.lat, location.lon);
+
+          // Update forecasts
+          updateForecasts(location.lat, location.lon);
 
           $("#search").classList.toggle("show");
           $("#app-header").classList.toggle("hide-left");
@@ -237,7 +332,10 @@ $("#search")
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
 
         // Update base app layout
-        update({ lat: location.lat, lon: location.lon });
+        updateLocation(location.lat, location.lon);
+
+        // Update forecasts
+        updateForecasts(location.lat, location.lon);
 
         // Reset searchTab
         $("#search").classList.toggle("show");
