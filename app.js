@@ -13,23 +13,25 @@ const $ = (element) => {
 };
 
 if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition((location) => {
-    // Update location UI
-    updateLocation(location.coords.latitude, location.coords.longitude);
+  // Get current postion via geo location
+  navigator.geolocation.getCurrentPosition(
+    async (location) => {
+      // Update location UI
+      await updateLocation(location.coords.latitude, location.coords.longitude);
 
-    // Update forecasts UI
-    updateForecasts(location.coords.latitude, location.coords.longitude);
-  });
+      // Update forecasts UI
+      await updateForecasts(location.coords.latitude, location.coords.longitude);
+
+      // Show base layout
+      $("#app-weather-data").style.display = "flex";
+      $("#app-weather-forecasts-hours").style.display = "flex";
+    },
+    (error) => {
+      // Show no-geo message
+      $("#app-weather-no-geo").style.display = "flex";
+    }
+  );
 }
-
-// Get weather data for a specific location
-const getWeatherData = async ({ lat, lon }) => {
-  const request = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
-  ).then((res) => res.json());
-  console.log(request);
-  return request;
-};
 
 const updateLocation = async (lat, lon) => {
   // Request weather data regarding location
@@ -37,7 +39,6 @@ const updateLocation = async (lat, lon) => {
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
   ).then((res) => res.json());
 
-  console.log(request);
   // Update main view location title
   $("#app-weather-location-data")
     .querySelector("h1")
@@ -129,6 +130,10 @@ const updateLocation = async (lat, lon) => {
     $("#app").removeAttribute("class");
     $("#app").classList.toggle("bg-snow");
   }
+
+  // Hide error and show weather data
+  $("#app-weather-no-geo").style.display = "none";
+  $("#app-weather-data").style.display = "flex";
 };
 
 const updateForecasts = async (lat, lon) => {
@@ -145,7 +150,6 @@ const updateForecasts = async (lat, lon) => {
   // Create forecast based on data
   $(".forecast-current").innerHTML = "";
   forecasts.forEach((forecast) => {
-    console.log(forecast);
     // Create parent element
     const element = document.createElement("div");
     element.classList.add("forecast");
@@ -215,6 +219,10 @@ const updateForecasts = async (lat, lon) => {
     <span>${forecast.wind.speed} m/s</span>`;
     // Append child elements to parent
     $(".forecast-current").appendChild(element);
+      
+    // Hide error message and show forecasts
+    $("#app-weather-no-geo").style.display = "none";
+    $("#app-weather-forecasts-hours").style.display = "flex";
   });
 };
 // Add event listener for toggling favourites panel
@@ -327,6 +335,9 @@ $("#search")
 
         // Add location to searchHistory
         searchHistory.push(location);
+
+        // Add current location
+        currentLocation = location;
 
         // Update localStorage with new searchHistory
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
