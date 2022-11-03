@@ -20,7 +20,10 @@ if (navigator.geolocation) {
       await updateLocation(location.coords.latitude, location.coords.longitude);
 
       // Update forecasts UI
-      await updateForecasts(location.coords.latitude, location.coords.longitude);
+      await updateForecasts(
+        location.coords.latitude,
+        location.coords.longitude
+      );
 
       // Show base layout
       $("#app-weather-data").style.display = "flex";
@@ -143,9 +146,12 @@ const updateForecasts = async (lat, lon) => {
   ).then((res) => res.json());
 
   // Filter forecast data to only include relevant data for the current day
-  const forecasts = request.list.filter((data) => {
-    return data.dt_txt.includes(request.list[0].dt_txt.split(" ")[0]);
-  });
+  const forecasts = [
+    request.list[0],
+    request.list[1],
+    request.list[2],
+    request.list[3],
+  ];
 
   // Create forecast based on data
   $(".forecast-current").innerHTML = "";
@@ -199,6 +205,11 @@ const updateForecasts = async (lat, lon) => {
     element.appendChild(weatherIcon);
     element.appendChild(weatherLabel);
 
+    let temperature = document.createElement("span");
+    temperature.innerText = `${Math.floor(forecast.main.temp - 273.15)}°C`;
+
+    element.appendChild(temperature);
+
     element.innerHTML += `
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +230,7 @@ const updateForecasts = async (lat, lon) => {
     <span>${forecast.wind.speed} m/s</span>`;
     // Append child elements to parent
     $(".forecast-current").appendChild(element);
-      
+
     // Hide error message and show forecasts
     $("#app-weather-no-geo").style.display = "none";
     $("#app-weather-forecasts-hours").style.display = "flex";
