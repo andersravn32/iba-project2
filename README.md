@@ -1,5 +1,5 @@
 # Vejrapp
-Gruppe 4's vejrapp
+Gruppe 4's vejrapp, nu til eksamensbrug
 
 ## Coding Conventions
 Følgende sektion beskriver hvilke coding conventions der er benyttet i projektet.
